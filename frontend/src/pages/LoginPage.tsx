@@ -1,13 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { apiServer } from "../config/config";
 import { enqueueSnackbar } from "notistack";
+import { UserContext } from "../context/userContext";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const { setUser } = useContext(UserContext);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,6 +22,8 @@ function LoginPage() {
         },
         { withCredentials: true }
       );
+      console.log("response.data", response.data);
+      
       if (response.status === 200) {
         enqueueSnackbar({
           message: "Login Successful",
@@ -27,6 +31,7 @@ function LoginPage() {
           anchorOrigin: { horizontal: "right", vertical: "top" },
           autoHideDuration: 2000,
         });
+        setUser(response?.data);
         setRedirect(true);
       }
     } catch (error) {

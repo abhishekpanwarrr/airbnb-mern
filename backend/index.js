@@ -67,10 +67,13 @@ app.post("/api/login", async (req, res) => {
       },
       jwtSecret
     );
-    if (token)
-      res.status(200).cookie("token", token).json({ message: "Password ok" });
+    existedUser.password = undefined;
+    if (token) {
+      res.status(200).cookie("token", token).json({ message: existedUser });
+    }
   } catch (error) {
-    res.json({ error: "Something went wrong" });
+    console.error("Error during user login:", error);
+    res.status(500).json({ error: "Something went wrong" });
   }
 });
 

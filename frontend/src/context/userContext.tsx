@@ -10,6 +10,7 @@ export interface User {
 export type UserContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  ready?: boolean;
 };
 
 export const UserContext = createContext<UserContextType | undefined>(
@@ -18,6 +19,7 @@ export const UserContext = createContext<UserContextType | undefined>(
 
 const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [ready, setReady] = useState(false);
   useEffect(() => {
     // Assuming you store the token in local storage
     if (!user) {
@@ -25,6 +27,7 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
         .get(`${apiServer}profile`, { withCredentials: true })
         .then(({ data }) => {
           setUser(data);
+          setReady(true)
         })
         .catch(() => setUser(null));
     } else {
@@ -32,7 +35,7 @@ const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, ready }}>
       {children}
     </UserContext.Provider>
   );

@@ -28,7 +28,7 @@ function LoginPage() {
       return enqueueSnackbar({
         message: "Check your email and password",
         variant: "error",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
         autoHideDuration: 2000,
       });
     try {
@@ -47,7 +47,7 @@ function LoginPage() {
         enqueueSnackbar({
           message: "Login Successful",
           variant: "success",
-          anchorOrigin: { horizontal: "right", vertical: "top" },
+          anchorOrigin: { horizontal: "right", vertical: "bottom" },
           autoHideDuration: 2000,
         });
         setRedirect(true);
@@ -56,7 +56,7 @@ function LoginPage() {
       return enqueueSnackbar({
         message: "Something went wrong please check your details",
         variant: "error",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
         autoHideDuration: 4000,
       });
     }

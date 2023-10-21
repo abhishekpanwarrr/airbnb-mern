@@ -14,7 +14,7 @@ function RegisterPage() {
       return enqueueSnackbar({
         message: "Check your credentials",
         variant: "error",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
         autoHideDuration: 2000,
       });
     try {
@@ -27,7 +27,7 @@ function RegisterPage() {
         enqueueSnackbar({
           message: "Registered Successfully",
           variant: "success",
-          anchorOrigin: { horizontal: "right", vertical: "top" },
+          anchorOrigin: { horizontal: "right", vertical: "bottom" },
           autoHideDuration: 2000,
         });
         setName("");
@@ -38,7 +38,7 @@ function RegisterPage() {
       return enqueueSnackbar({
         message: "Something went wrong please check your details",
         variant: "error",
-        anchorOrigin: { horizontal: "right", vertical: "top" },
+        anchorOrigin: { horizontal: "right", vertical: "bottom" },
         autoHideDuration: 4000,
       });
     }

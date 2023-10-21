@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
 import { UserModel } from "./models/User.js";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 const jwtSecret = "highlevelsecret";
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -19,6 +20,7 @@ app.use(
     origin: "http://localhost:5173",
   })
 );
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -69,12 +71,33 @@ app.post("/api/login", async (req, res) => {
     );
     existedUser.password = undefined;
     if (token) {
-      res.status(200).cookie("token", token).json({ message: existedUser });
+      res
+        .status(200)
+        .cookie("token", token, {
+          httpOnly: true,
+          sameSite: "strict",
+        })
+        .json(existedUser);
     }
   } catch (error) {
     console.error("Error during user login:", error);
     res.status(500).json({ error: "Something went wrong" });
   }
+});
+
+app.get("/api/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, (err, user) => {
+      if (err) throw Error;
+      res.json(user);
+    });
+  }
+  res.json(null);
+});
+
+app.post("/api/logout", (req, res) => {
+  res.cookie("token", "").json(true);
 });
 
 app.listen("8000");

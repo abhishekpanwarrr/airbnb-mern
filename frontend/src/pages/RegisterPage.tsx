@@ -3,12 +3,20 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiServer } from "../config/config";
 import { enqueueSnackbar } from "notistack";
+
 function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (name === "" || email === "" || password === "")
+      return enqueueSnackbar({
+        message: "Check your credentials",
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+        autoHideDuration: 2000,
+      });
     try {
       const response = await axios.post(`${apiServer}register`, {
         email,
@@ -29,9 +37,9 @@ function RegisterPage() {
     } catch (error) {
       return enqueueSnackbar({
         message: "Something went wrong please check your details",
-          variant: "error",
-          anchorOrigin: { horizontal: "right", vertical: "top" },
-          autoHideDuration: 4000,
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+        autoHideDuration: 4000,
       });
     }
   };

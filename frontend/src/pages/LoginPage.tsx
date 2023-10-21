@@ -3,18 +3,36 @@ import { useContext, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { apiServer } from "../config/config";
 import { enqueueSnackbar } from "notistack";
-import { UserContext } from "../context/userContext";
+import { UserContext, UserContextType } from "../context/userContext";
 
+export interface Response {
+  status: number;
+  data: {
+    email: string;
+    name: string;
+    __v: number;
+    _id: string;
+  };
+}
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { setUser } = useContext<UserContextType | undefined>(
+    UserContext
+  ) as UserContextType;
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (email === "" || password === "")
+      return enqueueSnackbar({
+        message: "Check your email and password",
+        variant: "error",
+        anchorOrigin: { horizontal: "right", vertical: "top" },
+        autoHideDuration: 2000,
+      });
     try {
-      const response = await axios.post(
+      const response: Response = await axios.post(
         `${apiServer}login`,
         {
           email,
@@ -22,16 +40,16 @@ function LoginPage() {
         },
         { withCredentials: true }
       );
-      console.log("response.data", response.data);
-      
+      console.log("response.data", response);
+
       if (response.status === 200) {
+        setUser(response?.data);
         enqueueSnackbar({
           message: "Login Successful",
           variant: "success",
           anchorOrigin: { horizontal: "right", vertical: "top" },
           autoHideDuration: 2000,
         });
-        setUser(response?.data);
         setRedirect(true);
       }
     } catch (error) {

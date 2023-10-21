@@ -2,19 +2,38 @@ import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { apiServer } from "../config/config";
-
+import { enqueueSnackbar } from "notistack";
 function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const resonse = axios.post(`${apiServer}register`, {
-      email,
-      password,
-      name,
-    });
+    try {
+      const response = await axios.post(`${apiServer}register`, {
+        email,
+        password,
+        name,
+      });
+      if (response.status === 201) {
+        enqueueSnackbar({
+          message: "Registered Successfully",
+          variant: "success",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+          autoHideDuration: 2000,
+        });
+        setName("");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (error) {
+      return enqueueSnackbar({
+        message: "Something went wrong please check your details",
+          variant: "error",
+          anchorOrigin: { horizontal: "right", vertical: "top" },
+          autoHideDuration: 4000,
+      });
+    }
   };
   return (
     <div className="mt-5">

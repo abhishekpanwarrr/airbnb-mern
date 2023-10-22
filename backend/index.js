@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { UserModel } from "./models/User.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import { PlaceModel } from "./models/Place.js";
 
 const jwtSecret = "highlevelsecret";
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -94,12 +95,49 @@ app.get("/api/profile", (req, res) => {
     });
   }
   res.json(null);
-}); 
+});
 
 app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
-
+app.post("/api/places", (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    address,
+    description,
+    addedPhotos,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+  try {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) {
+        console.error("Error verifying token:", err);
+        return res.status(401).json({ message: "Invalid token" });
+      }
+      const place = await PlaceModel.create({
+        owner: user.id,
+        title,
+        address,
+        description,
+        photos: addedPhotos,
+        perks,
+        extraInfo,
+        checkIn,
+        checkOut,
+        maxGuest: maxGuests,
+      });
+      res.status(201).json(place);
+    });
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
 
 app.listen("8000");

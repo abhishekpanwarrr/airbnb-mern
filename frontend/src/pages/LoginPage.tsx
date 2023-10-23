@@ -40,7 +40,6 @@ function LoginPage() {
         },
         { withCredentials: true }
       );
-      console.log("response.data", response);
 
       if (response.status === 200) {
         setUser(response?.data);

@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import Layout from "./components/Layout/Layout";
 import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "./pages/AccountPage";
+import SinglePlace from "./pages/SinglePlace";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="account/:subpage?" element={<AccountPage />} />
           <Route path="account/:subpage/:action" element={<AccountPage />} />
+          <Route path="/account/places/list/:id" element={<SinglePlace />} />
         </Route>
       </Routes>
     </>

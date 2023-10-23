@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import Perks from "../components/Perks/Perks";
 import axios from "axios";
 import { enqueueSnackbar } from "notistack";
+import AllPlaces from "./AllPlaces";
 
 const PlacesPage = () => {
   const { action } = useParams<{ action: string }>();
@@ -102,8 +103,6 @@ const PlacesPage = () => {
     }
   };
   if (redirect) return <Navigate to={"/account/places/list"} />;
-
-  console.log("Action", action);
 
   return (
     <div>
@@ -255,7 +254,9 @@ const PlacesPage = () => {
           </form>
         </div>
       )}
-      {action === "list" && <h1>"All places"</h1>}
+      {action === "list" && (
+        <AllPlaces />
+      )}
     </div>
   );
 };

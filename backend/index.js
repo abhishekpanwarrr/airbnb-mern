@@ -140,4 +140,33 @@ app.post("/api/places", (req, res) => {
   }
 });
 
+app.get("/api/places", (req, res) => {
+  const { token } = req.cookies;
+  try {
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) {
+        console.error("Error verifying token:", err);
+        return res.status(401).json({ message: "Invalid token" });
+      }
+      const { id } = user;
+      const places = await PlaceModel.find({ owner: id });
+
+      res.status(200).json(places);
+    });
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+app.get("/api/places/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const place = await PlaceModel.findOne({ _id:id });
+    res.status(200).json(place);
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
 app.listen("8000");

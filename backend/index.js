@@ -7,6 +7,7 @@ import { UserModel } from "./models/User.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import { PlaceModel } from "./models/Place.js";
+import { Booking } from "./models/Booking.js";
 
 const jwtSecret = "highlevelsecret";
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -162,8 +163,47 @@ app.get("/api/places", (req, res) => {
 app.get("/api/places/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const place = await PlaceModel.findOne({ _id:id });
+    const place = await PlaceModel.findOne({ _id: id });
     res.status(200).json(place);
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+app.get("/api/allPlaces/", async (req, res) => {
+  try {
+    const allPlaces = await PlaceModel.find();
+    res.status(200).json(allPlaces);
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+app.post("/api/booking", async (req, res) => {
+  const {
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuest,
+    name,
+    phone,
+    address,
+    price,
+  } = req.body;
+  try {
+    const booking = await Booking.create({
+      place,
+      checkIn,
+      checkOut,
+      numberOfGuest,
+      name,
+      phone,
+      address,
+      price,
+    });
+    res.status(201).json(booking);
   } catch (error) {
     console.error("Error during place creation:", error);
     res.status(500).json({ message: "something went wrong" });

@@ -10,14 +10,14 @@ const BookingSchema = new Schema(
     phone: Number,
     address: String,
     checkIn: {
-      type: Date,
-      required: true,
+        type:Date,
+        required: true,
     },
     checkOut: {
-      type: Date,
-      required: true,
+        type:Date,
+        required: true,
     },
-    price: Number,
+    price:Number,
     numberOfGuest: Number,
   },
   { timestamps: true }

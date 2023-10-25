@@ -209,4 +209,15 @@ app.post("/api/booking", async (req, res) => {
     res.status(500).json({ message: "something went wrong" });
   }
 });
+
+app.get("/api/booking/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const places = await Booking.findOne({ _id: id });
+    res.status(200).json(places);
+  } catch (error) {
+    console.error("Error during place creation:", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
 app.listen("8000");

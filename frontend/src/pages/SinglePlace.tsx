@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { apiServer } from "../config/config";
 import BookingWidget from "../components/BookingWidget/BookingWidget";
 import { differenceInCalendarDays, format, isBefore } from "date-fns";
@@ -47,6 +47,7 @@ const SinglePlace = () => {
   const [phone, setPhone] = useState("");
   const [numberOfGuest, setNumberOfGuest] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState("");
   const { id } = useParams();
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +71,7 @@ const SinglePlace = () => {
   }, [id]);
 
   if (!place) return "";
-
+  if (redirect) return <Navigate to={redirect} />;
   const handleBooking = async () => {
     if (
       differenceInCalendarDays(new Date(checkIn), new Date(checkOut)) >= 0 ||
@@ -109,6 +110,7 @@ const SinglePlace = () => {
         setPhone("");
         setNumberOfGuest(0);
         setLoading(false);
+        setRedirect(`/account/bookings/${response.data._id}`);
         return enqueueSnackbar({
           message: "Booking is successful 🎉🎉",
           variant: "success",

@@ -213,8 +213,10 @@ app.post("/api/booking", async (req, res) => {
 app.get("/api/booking/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const places = await Booking.findOne({ _id: id });
-    res.status(200).json(places);
+    const booking = await Booking.findOne({ _id: id });
+    const place = await PlaceModel.findOne({ _id: booking.place });
+    const data = {booking,place}
+    res.status(200).json(data);
   } catch (error) {
     console.error("Error during place creation:", error);
     res.status(500).json({ message: "something went wrong" });

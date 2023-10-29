@@ -254,6 +254,7 @@ const SinglePlace = () => {
       </div>
 
       <div>
+        {/* @ts-expect-error */}
         <BookingWidget place={place} />
       </div>
       <div>

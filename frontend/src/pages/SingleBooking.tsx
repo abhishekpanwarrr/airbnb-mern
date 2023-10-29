@@ -3,10 +3,27 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { apiServer } from "../config/config";
 import { format } from "date-fns";
-
+interface Booking {
+  place: {
+    title?: string;
+    extraInfo?: string;
+    address?: string;
+  };
+  booking: {
+    name: string;
+    phone: number;
+    address: string;
+    checkIn: string;
+    checkOut: string;
+    price: number;
+    numberOfGuest: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
 const SingleBooking = () => {
   const { id } = useParams();
-  const [booking, setBooking] = useState({});
+  const [booking, setBooking] = useState<Booking>({} as Booking);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -42,6 +59,7 @@ const SingleBooking = () => {
   return (
     <div className="bg-gray-300 rounded-md">
       <div className="mb-3 p-4">
+        {/*  */}
         <h3 className="text-3xl font-semibold"> {booking?.place?.title}</h3>
         <p className="flex gap-2 items-center">
           <svg

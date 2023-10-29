@@ -1,6 +1,6 @@
-import { SinglePlace } from "../../pages/SinglePlace";
-
-const BookingWidget = ({ place }: { place: SinglePlace }) => {
+// import { SinglePlace } from "../../pages/SinglePlace";
+// { place }: { place: SinglePlace }
+const BookingWidget = () => {
   return <div>BookingWidget</div>;
 };
 

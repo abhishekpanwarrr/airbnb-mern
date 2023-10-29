@@ -88,7 +88,7 @@ const PlacesPage = () => {
         maxGuests,
       };
       const { data } = await axios.post(
-        "http://localhost:8000/api/places",
+        "https://airbnb-mern-0hpi.onrender.com//api/places",
         payload,
         { withCredentials: true }
       );

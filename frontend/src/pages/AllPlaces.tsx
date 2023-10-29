@@ -7,7 +7,7 @@ const AllPlaces = () => {
   const [places, setPlaces] = useState<SinglePlace[]>([]);
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get("http://localhost:8000/api/places", {
+      const { data } = await axios.get("https://airbnb-mern-0hpi.onrender.com//api/places", {
         withCredentials: true,
       });
       setPlaces(data);

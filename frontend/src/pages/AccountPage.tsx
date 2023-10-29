@@ -29,7 +29,7 @@ const AccountPage = () => {
   }
   async function logOut() {
     const response = await axios.post(
-      "http://localhost:8000/api/logout",
+      "https://airbnb-mern-0hpi.onrender.com//api/logout",
       {},
       { withCredentials: true }
     );

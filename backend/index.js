@@ -19,9 +19,10 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: "https://airbnb-mern-frontend.vercel.app/",
+    origin: "https://airbnb-mern-frontend.vercel.app",
   })
 );
+
 app.use(cookieParser());
 
 mongoose
@@ -215,7 +216,7 @@ app.get("/api/booking/:id", async (req, res) => {
   try {
     const booking = await Booking.findOne({ _id: id });
     const place = await PlaceModel.findOne({ _id: booking.place });
-    const data = {booking,place}
+    const data = { booking, place };
     res.status(200).json(data);
   } catch (error) {
     console.error("Error during place creation:", error);
